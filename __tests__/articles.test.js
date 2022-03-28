@@ -9,13 +9,18 @@ afterAll(() => db.end());
 
 describe('testing article endpoints', () => {
   test('should return an object including keys {author, title, article_id , body, topic, created_at, votes}', async () => {
-    const { body } = await request(app).get('/api/articles/9').expect(200);
+    const { body } = await request(app).get('/api/articles/1').expect(200);
     const { article } = body;
-    expect('author' in article).toBe(true);
-    expect('title' in article).toBe(true);
-    expect('article_id' in article).toBe(true);
-    expect('body' in article).toBe(true);
-    expect('created_at' in article).toBe(true);
-    expect('votes' in article).toBe(true);
+    expect(article).toEqual(
+      expect.objectContaining({
+        author: 'butter_bridge',
+        title: 'Living in the shadow of a great man',
+        article_id: 1,
+        body: 'I find this existence challenging',
+        topic: 'mitch',
+        created_at: '2020-07-09T20:11:00.000Z',
+        votes: 100,
+      })
+    );
   });
 });
