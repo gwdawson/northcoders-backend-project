@@ -8,7 +8,7 @@ beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
 describe('testing users endpoints', () => {
-  test('should', async () => {
+  test('should return an array of all users usernames', async () => {
     const res = await request(app).get('/api/users').expect(200);
     expect(res.body.users).toEqual(
       expect.arrayContaining([
