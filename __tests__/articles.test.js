@@ -8,7 +8,7 @@ beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
 describe('testing article endpoints', () => {
-  test('should return an object including keys {author, title, article_id , body, topic, created_at, votes}', async () => {
+  test('should return an object including keys {author, title, article_id , body, topic, created_at, votes, comment_count}', async () => {
     const { body } = await request(app).get('/api/articles/1').expect(200);
     const { article } = body;
     expect(article).toEqual(
@@ -20,6 +20,7 @@ describe('testing article endpoints', () => {
         topic: 'mitch',
         created_at: '2020-07-09T20:11:00.000Z',
         votes: 100,
+        comment_count: 11,
       })
     );
   });
