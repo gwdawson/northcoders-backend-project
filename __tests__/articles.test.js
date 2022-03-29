@@ -25,7 +25,7 @@ describe('testing article endpoints', () => {
     );
   });
   describe('PATCH /api/articles/:article_id', () => {
-    test('should do somethingggg', async () => {
+    test('should return an the article with the updated vote count', async () => {
       const { body } = await request(app).patch('/api/articles/1').send({ inc_votes: 6 }).expect(200);
       const { article } = body;
       expect(article).toEqual(
