@@ -41,4 +41,11 @@ describe('testing article endpoints', () => {
       );
     });
   });
+  describe('GET /api/articles', () => {
+    test('should return an array of all articles', async () => {
+      const { body } = await request(app).get('/api/articles').expect(200);
+      const { articles } = body;
+      expect(articles).toHaveLength(12);
+    });
+  });
 });
