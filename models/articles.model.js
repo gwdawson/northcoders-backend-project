@@ -24,3 +24,11 @@ exports.fetchArticles = async () => {
   ORDER BY articles.created_at DESC;`);
   return rows;
 };
+
+exports.fetchCommentsByArticleId = async (article_id) => {
+  const { rows } = await db.query(
+    'SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id = $1;',
+    [article_id]
+  );
+  return rows;
+};
