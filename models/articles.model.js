@@ -1,4 +1,5 @@
 const db = require('../db/connection');
+const format = require('pg-format');
 
 exports.fetchArticleById = async (article_id) => {
   const { rows } = await db.query('SELECT * FROM articles WHERE article_id = $1;', [article_id]);
@@ -15,13 +16,39 @@ exports.updateArticleById = async (article_id, inc_votes) => {
   return rows[0];
 };
 
-exports.fetchArticles = async () => {
-  const { rows } = await db.query(`
+exports.fetchArticles = async (sort_by = 'created_at', order = 'DESC', topic = undefined) => {
+  const params = [];
+
+  const allowedColums = ['article_id', 'title', 'topic', 'author', 'body', 'comment_count', 'created_at', 'votes'];
+  if (!allowedColums.includes(sort_by))
+    return Promise.reject({
+      status: 400,
+      message: 'Invlaid sort_by',
+    });
+
+  const allowedOrderBy = ['ASC', 'asc', 'DESC', 'desc'];
+  if (!allowedOrderBy.includes(order))
+    return Promise.reject({
+      status: 400,
+      message: 'Invlaid sort_by',
+    });
+
+  let query = `
   SELECT articles.*, COUNT(comments.comment_id) AS comment_count
   FROM articles LEFT JOIN comments
-  ON articles.article_id = comments.article_id
+  ON articles.article_id = comments.article_id`;
+
+  if (topic) {
+    query += ` WHERE topic = $1 `;
+  }
+
+  query += `
   GROUP BY articles.article_id
-  ORDER BY articles.created_at DESC;`);
+  ORDER BY ${sort_by} ${order}`;
+
+  if (topic) params.push(topic);
+
+  const { rows } = await db.query(query, params);
   return rows;
 };
 

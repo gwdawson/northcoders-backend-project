@@ -18,9 +18,14 @@ exports.patchArticleById = async (req, res) => {
   res.status(200).send({ article });
 };
 
-exports.getArticles = async (req, res) => {
-  const articles = await fetchArticles();
-  res.status(200).send({ articles });
+exports.getArticles = async (req, res, next) => {
+  try {
+    const { sort_by, order, topic } = req.query;
+    const articles = await fetchArticles(sort_by, order, topic);
+    res.status(200).send({ articles });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.getCommentsByArticleId = async (req, res) => {
