@@ -5,12 +5,14 @@ const {
   getArticles,
   getCommentsByArticleId,
 } = require('./controllers/articles.controller');
+const { getApi } = require('./controllers/api.controller');
 const { getUsers } = require('./controllers/users.controller');
 const express = require('express');
 const app = express();
 
 app.use(express.json());
 
+app.get('/api', getApi);
 app.get('/api/topics', getTopics);
 app.get('/api/users', getUsers);
 app.get('/api/articles', getArticles);
