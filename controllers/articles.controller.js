@@ -1,4 +1,9 @@
-const { fetchArticleById, updateArticleById, fetchArticles } = require('../models/articles.model');
+const {
+  fetchArticleById,
+  updateArticleById,
+  fetchArticles,
+  fetchCommentsByArticleId,
+} = require('../models/articles.model');
 
 exports.getArticleById = async (req, res) => {
   const { article_id } = req.params;
@@ -16,4 +21,10 @@ exports.patchArticleById = async (req, res) => {
 exports.getArticles = async (req, res) => {
   const articles = await fetchArticles();
   res.status(200).send({ articles });
+};
+
+exports.getCommentsByArticleId = async (req, res) => {
+  const { article_id } = req.params;
+  const comments = await fetchCommentsByArticleId(article_id);
+  res.status(200).send({ comments });
 };
