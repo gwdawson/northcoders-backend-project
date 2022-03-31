@@ -23,14 +23,14 @@ exports.fetchArticles = async (sort_by = 'created_at', order = 'DESC', topic = u
   if (!allowedColums.includes(sort_by))
     return Promise.reject({
       status: 400,
-      message: 'Invlaid sort_by',
+      message: 'Invalid sort_by',
     });
 
   const allowedOrderBy = ['ASC', 'asc', 'DESC', 'desc'];
   if (!allowedOrderBy.includes(order))
     return Promise.reject({
       status: 400,
-      message: 'Invlaid sort_by',
+      message: 'Invalid sort_by',
     });
 
   let query = `
