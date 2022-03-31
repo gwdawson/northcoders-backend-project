@@ -18,4 +18,17 @@ app.get('/api/articles/:article_id', getArticleById);
 app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
 app.patch('/api/articles/:article_id', patchArticleById);
 
+app.use((err, req, res, next) => {
+  if (err.status === 400) {
+    res.status(400).send({ message: err.message });
+  } else {
+    next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).send({ message: 'Internal server error' });
+});
+
 module.exports = app;
