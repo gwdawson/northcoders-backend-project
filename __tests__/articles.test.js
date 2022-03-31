@@ -48,4 +48,23 @@ describe('testing article endpoints', () => {
       expect(articles).toHaveLength(12);
     });
   });
+  describe('POST /api/articles/:article_id/comments', () => {
+    test('should return an object including keys {author, body, article_id, created_at, comment_id}', async () => {
+      const { body } = await request(app)
+        .post('/api/articles/1/comments')
+        .send({ username: 'lurker', body: 'My username is lurker' })
+        .expect(201);
+      const { comment } = body;
+      expect(comment).toEqual(
+        expect.objectContaining({
+          comment_id: 19,
+          body: 'My username is lurker',
+          article_id: 1,
+          author: 'lurker',
+          votes: 0,
+          created_at: expect.any(String),
+        })
+      );
+    });
+  });
 });
