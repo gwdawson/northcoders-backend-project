@@ -1,4 +1,5 @@
 const { getTopics } = require('./controllers/topics.controller');
+const { removeCommentById } = require('./controllers/comments.controller');
 const {
   getArticleById,
   patchArticleById,
@@ -17,6 +18,7 @@ app.get('/api/articles', getArticles);
 app.get('/api/articles/:article_id', getArticleById);
 app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
 app.patch('/api/articles/:article_id', patchArticleById);
+app.delete('/api/comments/:comment_id', removeCommentById);
 
 app.use((err, req, res, next) => {
   if (err.status === 400) {
