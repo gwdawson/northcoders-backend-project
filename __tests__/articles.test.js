@@ -67,4 +67,26 @@ describe('testing article endpoints', () => {
       );
     });
   });
+  describe('GET /api/articles/:article_id/comments', () => {
+    test('should return an array of all comments for the given article_id', async () => {
+      const { body } = await request(app).get('/api/articles/9/comments').expect(200);
+      const { comments } = body;
+      expect(comments).toEqual([
+        {
+          comment_id: 1,
+          body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+          votes: 16,
+          author: 'butter_bridge',
+          created_at: '2020-04-06T12:17:00.000Z',
+        },
+        {
+          comment_id: 17,
+          body: 'The owls are not what they seem.',
+          votes: 20,
+          author: 'icellusedkars',
+          created_at: '2020-03-14T17:02:00.000Z',
+        },
+      ]);
+    });
+  });
 });
