@@ -2,6 +2,7 @@ const {
   fetchArticleById,
   updateArticleById,
   fetchArticles,
+  insertCommentByArticleId,
   fetchCommentsByArticleId,
 } = require('../models/articles.model');
 
@@ -23,6 +24,17 @@ exports.getArticles = async (req, res, next) => {
     const { sort_by, order, topic } = req.query;
     const articles = await fetchArticles(sort_by, order, topic);
     res.status(200).send({ articles });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.postCommentByArticleId = async (req, res, next) => {
+  try {
+    const { article_id } = req.params;
+    const { username, body } = req.body;
+    const comment = await insertCommentByArticleId(article_id, username, body);
+    res.status(201).send({ comment });
   } catch (err) {
     next(err);
   }
