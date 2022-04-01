@@ -23,8 +23,16 @@ app.delete('/api/comments/:comment_id', removeCommentById);
 app.use((err, req, res, next) => {
   if (err.status === 400) {
     res.status(400).send({ message: err.message });
+  } else if (err.status === 404) {
+    res.status(404).send({ message: err.message });
   } else {
     next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
+  if (err.code === '22P02') {
+    res.status(400).send({ message: 'bad request' });
   }
 });
 
