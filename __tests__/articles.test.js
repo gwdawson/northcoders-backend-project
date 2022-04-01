@@ -67,6 +67,17 @@ describe('testing article endpoints', () => {
         })
       );
     });
+    test('should return 400 when not given username and body keys', async () => {
+      const { body } = await request(app).post('/api/articles/1/comments').send({ username: 'lurker' }).expect(400);
+      expect(body).toEqual(expect.objectContaining({ message: 'POST request must include 2 keys [username, body]' }));
+    });
+    test('should return 400 when given an invalid username', async () => {
+      const { body } = await request(app)
+        .post('/api/articles/1/comments')
+        .send({ username: 'lurkerr', body: 'My username is lurker' })
+        .expect(400);
+      expect(body).toEqual(expect.objectContaining({ message: 'POST request must include a valid username' }));
+    });
   });
 
   describe('GET /api/articles?queries', () => {
