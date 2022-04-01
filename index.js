@@ -31,6 +31,16 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  if (err.code === '23502') {
+    res.status(400).send({ message: 'POST request must include 2 keys [username, body]' });
+  } else if (err.code === '235031') {
+    res.status(400).send({ message: 'POST request must include a valid username' });
+  } else {
+    next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
   console.log(err);
   res.status(500).send({ message: 'Internal server error' });
 });

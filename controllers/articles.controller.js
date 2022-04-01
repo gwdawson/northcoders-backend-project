@@ -29,11 +29,15 @@ exports.getArticles = async (req, res, next) => {
   }
 };
 
-exports.postCommentByArticleId = async (req, res) => {
-  const { article_id } = req.params;
-  const { username, body } = req.body;
-  const comment = await insertCommentByArticleId(article_id, username, body);
-  res.status(201).send({ comment });
+exports.postCommentByArticleId = async (req, res, next) => {
+  try {
+    const { article_id } = req.params;
+    const { username, body } = req.body;
+    const comment = await insertCommentByArticleId(article_id, username, body);
+    res.status(201).send({ comment });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.getCommentsByArticleId = async (req, res) => {
