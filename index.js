@@ -40,7 +40,7 @@ app.use((err, req, res, next) => {
   if (err.code === '23502') {
     res.status(400).send({ message: 'POST request must include 2 keys [username, body]' });
   } else if (err.code === '23503') {
-    res.status(404).send({ message: 'not found' });
+    res.status(400).send({ message: 'bad request' });
   } else if (err.code === '22P02') {
     res.status(400).send({ message: 'invalid article_id' });
   } else if (err.code === '42703') {

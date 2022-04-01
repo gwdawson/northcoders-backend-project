@@ -76,9 +76,9 @@ describe('testing article endpoints', () => {
         .post('/api/articles/1/comments')
         .send({ username: 'lurkerr', body: 'My username is lurker' })
         .expect(400);
-      expect(body).toEqual(expect.objectContaining({ message: 'POST request must include a valid username' }));
+      expect(body).toEqual(expect.objectContaining({ message: 'bad request' }));
     });
-    test.only('should return 400 when given an invalid article_id', async () => {
+    test('should return 400 when given an invalid article_id', async () => {
       const { body } = await request(app)
         .post('/api/articles/abc/comments')
         .send({ username: 'lurker', body: 'My username is lurker' })
@@ -89,8 +89,8 @@ describe('testing article endpoints', () => {
       const { body } = await request(app)
         .post('/api/articles/100000/comments')
         .send({ username: 'lurker', body: 'this is my body' })
-        .expect(404);
-      expect(body).toEqual(expect.objectContaining({ message: 'not found' }));
+        .expect(400);
+      expect(body).toEqual(expect.objectContaining({ message: 'bad request' }));
     });
   });
 
