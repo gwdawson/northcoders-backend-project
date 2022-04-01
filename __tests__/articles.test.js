@@ -48,6 +48,7 @@ describe('testing article endpoints', () => {
       expect(articles).toHaveLength(12);
     });
   });
+
   describe('POST /api/articles/:article_id/comments', () => {
     test('should return an object including keys {author, body, article_id, created_at, comment_id}', async () => {
       const { body } = await request(app)
@@ -65,6 +66,54 @@ describe('testing article endpoints', () => {
           created_at: expect.any(String),
         })
       );
+    });
+  });
+
+  describe('GET /api/articles?queries', () => {
+    test('should return an array of all articles that match the sort_by', async () => {
+      const { body } = await request(app).get('/api/articles?sort_by=votes').expect(200);
+      const { articles } = body;
+      expect(articles).toHaveLength(12);
+      expect(articles[0]).toEqual({
+        article_id: 1,
+        title: 'Living in the shadow of a great man',
+        topic: 'mitch',
+        author: 'butter_bridge',
+        body: 'I find this existence challenging',
+        comment_count: '11',
+        created_at: '2020-07-09T20:11:00.000Z',
+        votes: 100,
+      });
+    });
+    test('should return an array of all articles that match the sort_by', async () => {
+      const { body } = await request(app).get('/api/articles?order=asc').expect(200);
+      const { articles } = body;
+      expect(articles).toHaveLength(12);
+      expect(articles[0]).toEqual({
+        article_id: 7,
+        title: 'Z',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        body: 'I was hungry.',
+        created_at: '2020-01-07T14:08:00.000Z',
+        votes: 0,
+        comment_count: '0',
+      });
+    });
+    test('should return an array of all articles that match the topic', async () => {
+      const { body } = await request(app).get('/api/articles?topic=cats').expect(200);
+      const { articles } = body;
+      expect(articles).toHaveLength(1);
+      expect(articles[0]).toEqual({
+        article_id: 5,
+        title: 'UNCOVERED: catspiracy to bring down democracy',
+        topic: 'cats',
+        author: 'rogersop',
+        body: 'Bastet walks amongst us, and the cats are taking arms!',
+        comment_count: '2',
+        created_at: '2020-08-03T13:14:00.000Z',
+        votes: 0,
+      });
     });
   });
   describe('GET /api/articles/:article_id/comments', () => {
