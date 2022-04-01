@@ -22,24 +22,35 @@ app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
 app.patch('/api/articles/:article_id', patchArticleById);
 app.post('/api/articles/:article_id/comments', postCommentByArticleId);
 
+app.all('/*', (err, req, res, next) => {
+  res.status(404).send({ message: 'not found' });
+});
+
+// custom
 app.use((err, req, res, next) => {
-  if (err.status === 400) {
-    res.status(400).send({ message: err.message });
+  if (err.status) {
+    res.status(err.staus).send({ message: err.message });
   } else {
     next(err);
   }
 });
 
+// psql
 app.use((err, req, res, next) => {
   if (err.code === '23502') {
     res.status(400).send({ message: 'POST request must include 2 keys [username, body]' });
   } else if (err.code === '23503') {
-    res.status(400).send({ message: 'POST request must include a valid username' });
+    res.status(404).send({ message: 'not found' });
+  } else if (err.code === '22P02') {
+    res.status(400).send({ message: 'invalid article_id' });
+  } else if (err.code === '42703') {
+    res.status(400).send({ message: 'invalid article_id' });
   } else {
     next(err);
   }
 });
 
+// default
 app.use((err, req, res, next) => {
   console.log(err);
   res.status(500).send({ message: 'Internal server error' });

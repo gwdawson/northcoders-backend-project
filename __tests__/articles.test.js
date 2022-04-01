@@ -78,6 +78,20 @@ describe('testing article endpoints', () => {
         .expect(400);
       expect(body).toEqual(expect.objectContaining({ message: 'POST request must include a valid username' }));
     });
+    test.only('should return 400 when given an invalid article_id', async () => {
+      const { body } = await request(app)
+        .post('/api/articles/abc/comments')
+        .send({ username: 'lurker', body: 'My username is lurker' })
+        .expect(400);
+      expect(body).toEqual(expect.objectContaining({ message: 'invalid article_id' }));
+    });
+    test('should return 404 for a nonexistant article id ', async () => {
+      const { body } = await request(app)
+        .post('/api/articles/100000/comments')
+        .send({ username: 'lurker', body: 'this is my body' })
+        .expect(404);
+      expect(body).toEqual(expect.objectContaining({ message: 'not found' }));
+    });
   });
 
   describe('GET /api/articles?queries', () => {

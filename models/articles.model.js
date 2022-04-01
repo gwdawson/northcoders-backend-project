@@ -53,10 +53,11 @@ exports.fetchArticles = async (sort_by = 'created_at', order = 'DESC', topic = u
 };
 
 exports.insertCommentByArticleId = async (article_id, username, body) => {
-  const { rows } = await db.query(
-    'INSERT INTO comments (body, article_id, author, votes, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-    [body, article_id, username, 0, new Date()]
-  );
+  const { rows } = await db.query('INSERT INTO comments (article_id, author, body) VALUES ($1, $2, $3) RETURNING *', [
+    article_id,
+    username,
+    body,
+  ]);
   return rows[0];
 };
 
