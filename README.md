@@ -1,23 +1,19 @@
-# nc-news-api
+# northcoders-news-api
 
-`insert my projct description here...`
+This backend API provides you with an extensive amount of data about articles and users for the purpose of accessing all application data programmatically.
 
 ## Installation
 
-```sh
+```
 git clone https://github.com/gwdawson/nc-news-api
+
 cd nc-news-api
-```
 
-## Setup
-
-```js
 echo 'PGDATABASE=nc_news' > .env.development
+
 echo 'PGDATABASE=nc_news_test' > .env.test
+
+npm install
+
+npm start
 ```
-
-## Screenshots
-
-<!-- ![](./images/) -->
-
-<!-- ![](./images/) -->
