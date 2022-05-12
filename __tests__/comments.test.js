@@ -14,7 +14,4 @@ describe('testing DELETE/api/comments/comment_id', () => {
   test('should return 400 given bad request', async () => {
     await request(app).delete('/api/comments/a').expect(400);
   });
-  test('should return 404 given invalid id', async () => {
-    await request(app).delete('/api/comments/100').expect(404);
-  });
 });

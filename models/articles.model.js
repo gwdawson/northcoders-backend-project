@@ -1,5 +1,4 @@
 const db = require('../db/connection');
-const format = require('pg-format');
 
 exports.fetchArticleById = async (article_id) => {
   const { rows } = await db.query('SELECT * FROM articles WHERE article_id = $1;', [article_id]);
@@ -50,6 +49,15 @@ exports.fetchArticles = async (sort_by = 'created_at', order = 'DESC', topic = u
 
   const { rows } = await db.query(query, params);
   return rows;
+};
+
+exports.insertCommentByArticleId = async (article_id, username, body) => {
+  const { rows } = await db.query('INSERT INTO comments (article_id, author, body) VALUES ($1, $2, $3) RETURNING *', [
+    article_id,
+    username,
+    body,
+  ]);
+  return rows[0];
 };
 
 exports.fetchCommentsByArticleId = async (article_id) => {
