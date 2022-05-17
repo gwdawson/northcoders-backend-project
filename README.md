@@ -19,3 +19,8 @@ npm install
 
 npm start
 ```
+
+## Technologies
+
+- [x] PostgreSQL v14.2
+- [x] Node v17.4.0
